@@ -1,5 +1,5 @@
 const faces = ['R', 'L', 'U', 'D', 'F', 'B']
-const directions = {
+const moves = {
   '3x3x3': ['{f}', "{f}'", '{f}2'],
   '4x4x4': ['{f}', "{f}'", '{f}2', '{f}w', "{f}w'", '{f}w2'],
   '5x5x5': ['{f}', "{f}'", '{f}2', '{f}w', "{f}w'", '{f}w2'],
@@ -22,21 +22,21 @@ const excludeMoves = {
 }
 
 function generateMoves(type = '3x3x3', excludeFace = '') {
-  const moves = []
+  const newMoves = []
 
   for (const face of faces.filter((face) => face !== excludeFace)) {
-    for (const direction of directions[type]) {
-      moves.push(direction.replace('{f}', face))
+    for (const move of moves[type]) {
+      newMoves.push(move.replace('{f}', face))
     }
   }
 
-  return moves
+  return newMoves
 }
 
 function getRandomMove(type = '3x3x3', excludeFace = '') {
-  const moves = generateMoves(type, excludeFace)
-  const randomIndex = Math.floor(Math.random() * moves.length)
-  return moves[randomIndex]
+  const newMoves = generateMoves(type, excludeFace)
+  const randomIndex = Math.floor(Math.random() * newMoves.length)
+  return newMoves[randomIndex]
 }
 
 function generateScramble(type = '3x3x3', numMoves = maxMoves[type]) {
@@ -48,15 +48,15 @@ function generateScramble(type = '3x3x3', numMoves = maxMoves[type]) {
   for (let i = 0; i < numMoves; i++) {
     const excludeFace = scramble.length > 2 ? scramble[i - 2].charAt(0) : ''
 
-    let newMove = getRandomMove(type, excludeFace)
+    let move = getRandomMove(type, excludeFace)
 
     // Ensure the new move is not in the same direction as the last move
-    while (newMove.charAt(0) === lastMove.charAt(0) || excludeMoves[type].includes(newMove)) {
-      newMove = getRandomMove(type, excludeFace)
+    while (move.charAt(0) === lastMove.charAt(0) || excludeMoves[type].includes(move)) {
+      move = getRandomMove(type, excludeFace)
     }
 
-    lastMove = newMove
-    scramble.push(newMove)
+    lastMove = move
+    scramble.push(move)
   }
 
   return scramble
