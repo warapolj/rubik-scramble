@@ -20,12 +20,11 @@ function getRandomMove(excludeFace = '') {
 }
 
 function generateScramble(numMoves = 25) {
-  let scramble = ''
+  let scramble = []
   let lastMove = ''
 
   for (let i = 0; i < numMoves; i++) {
-    const scrambleArr = scramble.split(' ')
-    const excludeFace = scrambleArr.length > 2 ? scrambleArr[i - 2].charAt(0) : ''
+    const excludeFace = scramble.length > 2 ? scramble[i - 2].charAt(0) : ''
 
     let newMove = getRandomMove(excludeFace)
 
@@ -35,14 +34,10 @@ function generateScramble(numMoves = 25) {
     }
 
     lastMove = newMove
-    scramble += newMove
-
-    if (i < numMoves) {
-      scramble += ' '
-    }
+    scramble.push(newMove)
   }
 
   return scramble
 }
 
-module.exports = generateScramble
+console.log('3x3x3 Scramble: ' + generateScramble(25).join(' '))
